@@ -22,20 +22,44 @@
 # language governing permissions and limitations under the Apache License.
 #
 
+"""
+Contains UsdQt-specific Qt user roles, as well as some hint types for custom
+editor widgets.
+"""
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from ._Qt import QtCore
 
+# The editor hint role is used to provide additional information for UI
+# instantiation that the value of the edit role alone may not be sufficient to
+# provide.  For example, we may need to differentiate between a GfVec3f that
+# represents a 3-tuple and a GfVec3f that represents a color.
+# All UsdQt EditorHints are defined below and are prefixed with EditorHint.
 EditorHintRole = QtCore.Qt.UserRole + 2
-LayerStackDepthRole = QtCore.Qt.UserRole + 3
-HierarchyPrimRole = QtCore.Qt.UserRole + 4
+
+# Used to retrieve the prim object in hierarchy models.
+HierarchyPrimRole = QtCore.Qt.UserRole + 3
+
+# Specializations that leverage UsdQt at its core can use UsdQtUserRole as the
+# first safe index for additional user roles
 UsdQtUserRole = QtCore.Qt.UserRole + 16
 
 
 class EditorHintBasicValue(object):
     """Used for values whose editor can be inferred soley from the TfType"""
+    __slots__ = ('__type',)
+
+    def __init__(self, tfType):
+        self.__type = tfType
+
+    @property
+    def type(self):
+        return self.__type
+
+
+class EditorHintColorValue(object):
+    """Hint for when a color editor needs to be instantiated"""
+    __slots__ = ('__type',)
 
     def __init__(self, tfType):
         self.__type = tfType
@@ -47,6 +71,7 @@ class EditorHintBasicValue(object):
 
 class EditorHintTextCombo(object):
     """Used for a string/token editor restricted by a list of allowed values"""
+    __slots__ = ('__allowedValues',)
 
     def __init__(self, allowedValues):
         self.__allowedValues = allowedValues
@@ -58,6 +83,7 @@ class EditorHintTextCombo(object):
 
 class EditorHintTab(object):
     """Used when an item should be drawn as a tab"""
+    __slots__ = ()
 
     def __init__(self):
         pass

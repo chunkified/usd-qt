@@ -153,6 +153,17 @@ static std::string _DisplayGroupRepr(UsdQt_DisplayGroupProxyPtr proxy) {
                           proxy->GetName().GetText());
 }
 
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_ProxyBase)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_ObjectProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_VariantSetsProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_VariantSetProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_MetadataProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_MetadataDictKeyProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_AttributeProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_RelationshipProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_PrimProxy)
+TF_REFPTR_CONST_VOLATILE_GET(UsdQt_DisplayGroupProxy)
+
 void wrapOpinionProxy() {
     {
         typedef UsdQt_ProxyBase This;
@@ -261,6 +272,9 @@ void wrapOpinionProxy() {
             .def("GetSize", &This::GetSize)
             .def("GetAttributes", &This::GetAttributes,
                  return_value_policy<TfPySequenceToList>())
+            .def("IsDefined", &This::IsDefined)
+            .def("IsAuthored", &This::IsAuthored)
+            .def("IsAuthoredAt", &This::IsAuthoredAt)
             .def("__repr__", &::_AttributeRepr);
     }
     {
@@ -279,6 +293,9 @@ void wrapOpinionProxy() {
             .def("GetMetadataFields", &This::GetMetadataFields)
             .def("CreateMetadataProxy", &This::CreateMetadataProxy,
                  return_value_policy<TfPyRefPtrFactory<>>())
+            .def("IsDefined", &This::IsDefined)
+            .def("IsAuthored", &This::IsAuthored)
+            .def("IsAuthoredAt", &This::IsAuthoredAt)
             .def("__repr__", &::_RelationshipRepr);
     }
     {
